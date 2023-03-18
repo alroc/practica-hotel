@@ -6,14 +6,15 @@ import com.atsistemas.practicahotel.dto.HotelDto;
 import com.atsistemas.practicahotel.entity.Hotel;
 
 @Component
-public class HotelMapper {
-	
-	public HotelDto mapToDto(Hotel hotel) {
-		return new HotelDto(hotel.getId(), hotel.getName(), hotel.getCategory());
-	}
-	
-	public Hotel mapToEntity(HotelDto hotel) {
-		return new Hotel(hotel.getId(), hotel.getName(), hotel.getCategory());
+public class HotelMapper implements Mapper<HotelDto, Hotel>{
+
+	@Override
+	public HotelDto mapToDto(Hotel entity) {
+		return new HotelDto(entity.getId(), entity.getName(), entity.getCategory());
 	}
 
+	@Override
+	public Hotel mapToEntity(HotelDto dto) {
+		return new Hotel(dto.getId(), dto.getName(), dto.getCategory());
+	}
 }

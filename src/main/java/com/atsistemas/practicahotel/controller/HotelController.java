@@ -20,6 +20,7 @@ import com.atsistemas.practicahotel.dto.HotelDto;
 import com.atsistemas.practicahotel.entity.Hotel;
 import com.atsistemas.practicahotel.error.HotelNotFoundException;
 import com.atsistemas.practicahotel.mapper.HotelMapper;
+import com.atsistemas.practicahotel.mapper.Mapper;
 import com.atsistemas.practicahotel.service.HotelService;
 
 @RestController
@@ -27,9 +28,9 @@ import com.atsistemas.practicahotel.service.HotelService;
 public class HotelController {
 	
 	private HotelService hotelService;
-	private HotelMapper hotelMapper;
+	private Mapper<HotelDto, Hotel> hotelMapper;
 
-	public HotelController(HotelService hotelService, HotelMapper hotelMapper) {
+	public HotelController(HotelService hotelService, Mapper<HotelDto, Hotel> hotelMapper) {
 		super();
 		this.hotelService = hotelService;
 		this.hotelMapper = hotelMapper;

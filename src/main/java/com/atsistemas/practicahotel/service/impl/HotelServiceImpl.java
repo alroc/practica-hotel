@@ -27,14 +27,7 @@ public class HotelServiceImpl implements HotelService {
 
 	@Override
 	public Hotel findById(Integer id) throws HotelNotFoundException {
-		Optional<Hotel> hotelOpt = hotelRepository.findById(id);
-		
-		if(hotelOpt.isPresent())
-			return hotelOpt.get();
-		else
-		{
-			throw new HotelNotFoundException();
-		}
+		return hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException());
 	}
 
 	@Override
