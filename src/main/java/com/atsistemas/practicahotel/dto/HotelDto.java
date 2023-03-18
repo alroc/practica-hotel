@@ -1,9 +1,15 @@
 package com.atsistemas.practicahotel.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class HotelDto {
 	
 	private Integer id;
+	
+	@NotEmpty
 	private String name;
+	@NotNull
 	private Integer category;
 	
 	public HotelDto(Integer id, String name, Integer category) {
