@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.atsistemas.practicahotel.dto.HotelDto;
 import com.atsistemas.practicahotel.entity.Hotel;
 import com.atsistemas.practicahotel.error.HotelNotFoundException;
-import com.atsistemas.practicahotel.mapper.HotelMapper;
 import com.atsistemas.practicahotel.mapper.Mapper;
 import com.atsistemas.practicahotel.service.HotelService;
 
@@ -63,7 +62,6 @@ public class HotelController {
 		
 		return hotelMapper.mapToDto(hotelService.update(id, hotel));
 	}
-	
 	
 
 }

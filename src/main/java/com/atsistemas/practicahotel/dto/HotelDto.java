@@ -46,8 +46,4 @@ public class HotelDto {
 		this.category = category;
 	}
 	
-	
-
-	
-
 }

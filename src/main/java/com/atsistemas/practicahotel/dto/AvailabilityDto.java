@@ -1,18 +1,19 @@
 package com.atsistemas.practicahotel.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class AvailabilityDto {
 	
 	private Integer id;
 	
-	private Date date;
+	private LocalDate date;
 	
 	private HotelDto hotel;
 
 	private Integer rooms;
 
-	public AvailabilityDto(Integer id, Date date, HotelDto hotel, Integer rooms) {
+	public AvailabilityDto(Integer id, LocalDate date, HotelDto hotel, Integer rooms) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -31,11 +32,11 @@ public class AvailabilityDto {
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

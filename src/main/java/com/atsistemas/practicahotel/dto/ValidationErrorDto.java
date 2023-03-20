@@ -20,16 +20,17 @@ public class ValidationErrorDto {
 	public String getCode() {
 		return code;
 	}
+	
 	public void setCode(String code) {
 		this.code = code;
 	}
+	
 	public List<String> getErrors() {
 		return errors;
 	}
+	
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
 	}
 	
-	
-
 }

@@ -1,6 +1,6 @@
 package com.atsistemas.practicahotel.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "availabilities")
 public class Availability {
@@ -22,7 +23,7 @@ public class Availability {
 	private Integer id;
 	
 	@Column(name = "date")
-	private Date date;
+	private LocalDate date;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_hotel")
@@ -31,7 +32,7 @@ public class Availability {
 	@Column(name = "rooms")
 	private Integer rooms;
 
-	public Availability(Integer id, Date date, Hotel hotel, Integer rooms) {
+	public Availability(Integer id, LocalDate date, Hotel hotel, Integer rooms) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -51,11 +52,11 @@ public class Availability {
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
