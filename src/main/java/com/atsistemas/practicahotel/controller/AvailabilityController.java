@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,29 +32,28 @@ public class AvailabilityController {
 	private Mapper<HotelDto, Hotel> hotelMapper;
 	
 	
-	public AvailabilityController(AvailabilityService availabilityService, Mapper<HotelDto, 
-			Hotel> hotelMapper) {
+	public AvailabilityController(AvailabilityService availabilityService, Mapper<HotelDto,Hotel> hotelMapper) {
 		super();
 		this.availabilityService = availabilityService;
 		this.hotelMapper = hotelMapper;
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void open(@RequestBody OpenAvailabilityDto openAvailabilityDto) throws HotelNotFoundException {
+	public ResponseEntity<Void> open(@Valid @RequestBody OpenAvailabilityDto openAvailabilityDto) throws HotelNotFoundException {
 		
 		availabilityService.open(openAvailabilityDto);
-
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
 	@GetMapping(value = "/hotels", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<HotelDto> getAvailableHotels(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) 
-		LocalDate dateFrom, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
-		@RequestParam(required = false) String name, @RequestParam(required = false) Integer category) {
+	public ResponseEntity<List<HotelDto>> getAvailableHotels(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
+			@RequestParam(required = false) String name, @RequestParam(required = false) Integer category) {
 
 		List<HotelDto> hotelsDto = availabilityService.findAvailableHotels(dateFrom, dateTo, name, category)
 				.stream().map(hotelMapper::mapToDto).collect(Collectors.toList());
 
-		return hotelsDto;
+		return ResponseEntity.status(HttpStatus.OK).body(hotelsDto);
 	}
 	
 }

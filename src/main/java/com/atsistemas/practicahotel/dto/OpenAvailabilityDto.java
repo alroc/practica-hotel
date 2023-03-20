@@ -4,16 +4,23 @@ import java.time.LocalDate;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class OpenAvailabilityDto {
 	
+	@NotNull
 	@Temporal(TemporalType.DATE)
 	private LocalDate dateFrom;
 	
+	@NotNull
 	@Temporal(TemporalType.DATE)
 	private LocalDate dateTo;
 	
+	@NotNull
 	private Integer idHotel;
+	
+	@NotNull
 	private Integer rooms;
 	
 	public OpenAvailabilityDto(LocalDate dateFrom, LocalDate dateTo, Integer idHotel, Integer rooms) {

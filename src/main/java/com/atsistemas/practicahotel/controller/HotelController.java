@@ -37,7 +37,8 @@ public class HotelController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<HotelDto>> getAll() {
-		List<HotelDto> hotelsDto = hotelService.findAll().stream().map(hotelMapper::mapToDto).collect(Collectors.toList());
+		List<HotelDto> hotelsDto = hotelService.findAll().stream()
+				.map(hotelMapper::mapToDto).collect(Collectors.toList());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(hotelsDto);
 	}
@@ -50,17 +51,20 @@ public class HotelController {
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public HotelDto create(@Valid @RequestBody HotelDto hotelDto) {
+	public ResponseEntity<HotelDto> create(@Valid @RequestBody HotelDto hotelDto) {
 		Hotel hotel = hotelMapper.mapToEntity(hotelDto);
 		
-		return hotelMapper.mapToDto(hotelService.create(hotel));
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(hotelMapper.mapToDto(hotelService.create(hotel)));		
 	}
 	
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public HotelDto update(@PathVariable Integer id, @RequestBody HotelDto hotelDto) throws HotelNotFoundException {
+	public  ResponseEntity<HotelDto> update(@PathVariable Integer id,
+			@RequestBody HotelDto hotelDto) throws HotelNotFoundException {
 		Hotel hotel = hotelMapper.mapToEntity(hotelDto);
 		
-		return hotelMapper.mapToDto(hotelService.update(id, hotel));
+		return ResponseEntity.status(HttpStatus.OK).
+				body(hotelMapper.mapToDto(hotelService.update(id, hotel)));
 	}
 	
 

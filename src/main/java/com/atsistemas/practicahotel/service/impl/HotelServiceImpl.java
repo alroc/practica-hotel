@@ -38,9 +38,14 @@ public class HotelServiceImpl implements HotelService {
 	@Override
 	public Hotel update(Integer id, Hotel updatedHotel) throws HotelNotFoundException {
 		Hotel hotel = findById(id);
+		String name = updatedHotel.getName();
+		Integer category = updatedHotel.getCategory();
 		
-		hotel.setName(updatedHotel.getName());
-		hotel.setCategory(updatedHotel.getCategory());		
+		if(name != null)
+			hotel.setName(name);
+		
+		if(category != null)
+			hotel.setCategory(category);
 		
 		return hotelRepository.save(hotel);
 	}

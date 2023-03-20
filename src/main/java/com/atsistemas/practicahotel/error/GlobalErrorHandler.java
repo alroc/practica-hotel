@@ -28,7 +28,8 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
-		List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage)
+		List<String> errors = ex.getBindingResult().getFieldErrors().stream()
+				.map(err -> err.getField().concat(": ").concat(err.getDefaultMessage()))
 				.collect(Collectors.toList());
 
 		return new ResponseEntity<Object>(
