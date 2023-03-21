@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.atsistemas.practicahotel.entity.Availability;
 import com.atsistemas.practicahotel.entity.Hotel;
 
-public interface AvailabilityRepository extends JpaRepository<Availability, Integer>{
+public interface AvailabilityRepository extends JpaRepository<Availability, Integer> {
 	
 	//Busca la disponibilidad de un hotel y una fecha
 	Optional<Availability> findByDateAndHotel(LocalDate date, Hotel hotel);

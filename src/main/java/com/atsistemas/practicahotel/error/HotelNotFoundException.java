@@ -1,6 +1,6 @@
 package com.atsistemas.practicahotel.error;
 
-public class HotelNotFoundException extends Exception{
+public class HotelNotFoundException extends Exception {
 
 	/**
 	 * 

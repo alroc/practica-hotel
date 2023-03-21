@@ -20,8 +20,13 @@ import com.atsistemas.practicahotel.dto.ValidationErrorDto;
 public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(value = HotelNotFoundException.class)
-	public ResponseEntity<Object> handlePruebaException(HotelNotFoundException ex) {
+	public ResponseEntity<Object> handleHotelNotFoundException(HotelNotFoundException ex) {
 		return new ResponseEntity<>(new ErrorDto("404", ex.getMessage()), HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(value = HotelNotAvailableException.class)
+	public ResponseEntity<Object> handleHotelNotAvailableException(HotelNotAvailableException ex) {
+		return new ResponseEntity<>(new ErrorDto("400", ex.getMessage()), HttpStatus.BAD_REQUEST);
 	}
 
 	@Override
