@@ -16,4 +16,5 @@ public interface BookingService {
 	Booking create(CreateBookingDto createBookingDto) throws HotelNotFoundException, HotelNotAvailableException;
 	Booking findById(Integer id) throws BookingNotFoundException;
 	List<Booking> findBookings(Integer idHotel, LocalDate dateFrom, LocalDate dateTo) throws HotelNotFoundException; 
+	void delete(Integer id) throws BookingNotFoundException;
 }

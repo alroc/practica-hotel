@@ -2,7 +2,6 @@ package com.atsistemas.practicahotel.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -78,7 +77,22 @@ public class BookingServiceImpl implements BookingService {
 		return bookingRepository.findByHotelAndDateFromAndDateTo(hotel, dateFrom, dateTo);
 	}
 
-
-
-
+	@Override
+	public void delete(Integer id) throws BookingNotFoundException {
+		Booking booking = this.findById(id);
+		
+		//Se incrementa en una unidad las disponibilidades correspondientes
+		Hotel hotel = booking.getHotel();
+		List<LocalDate> dates = booking.getDateFrom()
+				.datesUntil(booking.getDateTo().plusDays(1)).collect(Collectors.toList());
+		
+		dates.forEach((date) -> {
+			Availability availability = availabilityRepository.findByDateAndHotel(date, hotel).get();
+			availability.setRooms(availability.getRooms() + 1);
+			availabilityRepository.save(availability);
+		});
+		
+		//Se elimina la reserva
+		bookingRepository.delete(booking);
+	}
 }
