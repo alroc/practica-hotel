@@ -28,6 +28,11 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleHotelNotAvailableException(HotelNotAvailableException ex) {
 		return new ResponseEntity<>(new ErrorDto("400", ex.getMessage()), HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(value = BookingNotFoundException.class)
+	public ResponseEntity<Object> handleBookingNotFoundException(BookingNotFoundException ex) {
+		return new ResponseEntity<>(new ErrorDto("404", ex.getMessage()), HttpStatus.NOT_FOUND);
+	}
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

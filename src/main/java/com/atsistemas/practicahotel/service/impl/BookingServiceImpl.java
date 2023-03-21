@@ -11,6 +11,7 @@ import com.atsistemas.practicahotel.dto.CreateBookingDto;
 import com.atsistemas.practicahotel.entity.Availability;
 import com.atsistemas.practicahotel.entity.Booking;
 import com.atsistemas.practicahotel.entity.Hotel;
+import com.atsistemas.practicahotel.error.BookingNotFoundException;
 import com.atsistemas.practicahotel.error.HotelNotAvailableException;
 import com.atsistemas.practicahotel.error.HotelNotFoundException;
 import com.atsistemas.practicahotel.repository.AvailabilityRepository;
@@ -66,6 +67,16 @@ public class BookingServiceImpl implements BookingService {
 		return bookingRepository.save(booking);
 	}
 
+	@Override
+	public Booking findById(Integer id) throws BookingNotFoundException {
+		return bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException());
+	}
+
+	@Override
+	public List<Booking> findBookings(Integer idHotel, LocalDate dateFrom, LocalDate dateTo) throws HotelNotFoundException {
+		Hotel hotel = hotelService.findById(idHotel);
+		return bookingRepository.findByHotelAndDateFromAndDateTo(hotel, dateFrom, dateTo);
+	}
 
 
 
