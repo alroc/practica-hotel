@@ -50,7 +50,7 @@ public class HotelServiceImpl implements HotelService {
 		return hotelRepository.save(hotel);
 	}
 	
-	//Buscador de hoteles con filtros
+	@Override
 	public List<Hotel> findHotels(String name, Integer category) {
 		Specification<Hotel> spec = Specification.where(null);
 
@@ -66,14 +66,11 @@ public class HotelServiceImpl implements HotelService {
 
 		return hotelRepository.findAll(spec);
 	}
-	
-	
-	//Filtro por categoria
+		
 	private Specification<Hotel> categoryFilter(Integer category) {
 		return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category"), category);
 	}
 	
-	//Filtro por nombre
 	private Specification<Hotel> nameFilter(String name) {
 		return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%" + name + "%");
 	}

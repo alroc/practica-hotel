@@ -2,17 +2,22 @@ package com.atsistemas.practicahotel.dto;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class CreateBookingDto {
 	
-	private Integer id;
+	@NotNull
 	private Integer idHotel;
+	@NotNull
 	private LocalDate dateFrom;
+	@NotNull
 	private LocalDate dateTo;
+	@NotBlank
 	private String email;
 	
-	public CreateBookingDto(Integer id, Integer idHotel, LocalDate dateFrom, LocalDate dateTo, String email) {
+	public CreateBookingDto(Integer idHotel, LocalDate dateFrom, LocalDate dateTo, String email) {
 		super();
-		this.id = id;
 		this.idHotel = idHotel;
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
@@ -21,14 +26,6 @@ public class CreateBookingDto {
 	
 	public CreateBookingDto() {
 		
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Integer getIdHotel() {

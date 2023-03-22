@@ -37,35 +37,27 @@ public class HotelController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<HotelDto>> getAll() {
-		List<HotelDto> hotelsDto = hotelService.findAll().stream()
-				.map(hotelMapper::mapToDto).collect(Collectors.toList());
-		
-		return ResponseEntity.status(HttpStatus.OK).body(hotelsDto);
+		return ResponseEntity.status(HttpStatus.OK).body(hotelService.findAll().stream()
+				.map(hotelMapper::mapToDto).collect(Collectors.toList()));
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<HotelDto> getById(@PathVariable Integer id) throws HotelNotFoundException {
-		HotelDto hotelDto = hotelMapper.mapToDto(hotelService.findById(id));
-		
-		return ResponseEntity.status(HttpStatus.OK).body(hotelDto);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(hotelMapper.mapToDto(hotelService.findById(id)));
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<HotelDto> create(@Valid @RequestBody HotelDto hotelDto) {
-		Hotel hotel = hotelMapper.mapToEntity(hotelDto);
-		
+	public ResponseEntity<HotelDto> create(@Valid @RequestBody HotelDto hotelDto) {		
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(hotelMapper.mapToDto(hotelService.create(hotel)));		
+				.body(hotelMapper.mapToDto(hotelService.create(hotelMapper.mapToEntity(hotelDto))));		
 	}
 	
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public  ResponseEntity<HotelDto> update(@PathVariable Integer id,
-			@RequestBody HotelDto hotelDto) throws HotelNotFoundException {
-		Hotel hotel = hotelMapper.mapToEntity(hotelDto);
+			@RequestBody HotelDto hotelDto) throws HotelNotFoundException {		
 		
-		return ResponseEntity.status(HttpStatus.OK).
-				body(hotelMapper.mapToDto(hotelService.update(id, hotel)));
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(hotelMapper.mapToDto(hotelService.update(id, hotelMapper.mapToEntity(hotelDto))));
 	}
-	
-
 }

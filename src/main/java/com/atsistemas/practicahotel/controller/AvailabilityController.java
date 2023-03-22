@@ -31,7 +31,6 @@ public class AvailabilityController {
 	private AvailabilityService availabilityService;
 	private Mapper<HotelDto, Hotel> hotelMapper;
 	
-	
 	public AvailabilityController(AvailabilityService availabilityService, Mapper<HotelDto,Hotel> hotelMapper) {
 		super();
 		this.availabilityService = availabilityService;
@@ -46,14 +45,13 @@ public class AvailabilityController {
 	}
 	
 	@GetMapping(value = "/hotels", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<HotelDto>> getAvailableHotels(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+	public ResponseEntity<List<HotelDto>> getAvailableHotels(
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
-			@RequestParam(required = false) String name, @RequestParam(required = false) Integer category) {
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer category) {
 
-		List<HotelDto> hotelsDto = availabilityService.findAvailableHotels(dateFrom, dateTo, name, category)
-				.stream().map(hotelMapper::mapToDto).collect(Collectors.toList());
-
-		return ResponseEntity.status(HttpStatus.OK).body(hotelsDto);
+		return ResponseEntity.status(HttpStatus.OK).body(availabilityService.findAvailableHotels(dateFrom, dateTo, name, category)
+				.stream().map(hotelMapper::mapToDto).collect(Collectors.toList()));
 	}
-	
 }

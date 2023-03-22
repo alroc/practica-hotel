@@ -12,7 +12,6 @@ import com.atsistemas.practicahotel.entity.Hotel;
 public class BookingMapper implements Mapper<BookingDto, Booking>{
 
 	private Mapper<HotelDto, Hotel> hotelMapper;
-
 	
 	public BookingMapper(Mapper<HotelDto, Hotel> hotelMapper) {
 		super();

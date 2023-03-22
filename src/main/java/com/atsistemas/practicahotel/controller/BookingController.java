@@ -42,33 +42,31 @@ public class BookingController {
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public BookingDto create(@RequestBody CreateBookingDto createBookingDto) throws HotelNotFoundException, HotelNotAvailableException {
+	public ResponseEntity<BookingDto> create(@Valid @RequestBody CreateBookingDto createBookingDto)
+			throws HotelNotFoundException, HotelNotAvailableException {
 		
-		return bookingMapper.mapToDto(bookingService.create(createBookingDto));
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(bookingMapper.mapToDto(bookingService.create(createBookingDto)));
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<BookingDto>> getBookings(@RequestParam Integer idHotel,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) throws HotelNotFoundException {
-
-		List<BookingDto> bookingsDto = bookingService.findBookings(idHotel, dateFrom, dateTo)
-				.stream().map(bookingMapper::mapToDto).collect(Collectors.toList());
-
-		return ResponseEntity.status(HttpStatus.OK).body(bookingsDto);
+				
+		return ResponseEntity.status(HttpStatus.OK).body(bookingService.findBookings(idHotel, dateFrom, dateTo)
+				.stream().map(bookingMapper::mapToDto).collect(Collectors.toList()));
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BookingDto> getById(@PathVariable Integer id) throws BookingNotFoundException {
-		BookingDto bookingDto = bookingMapper.mapToDto(bookingService.findById(id));
-		
-		return ResponseEntity.status(HttpStatus.OK).body(bookingDto);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(bookingMapper.mapToDto(bookingService.findById(id)));
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) throws BookingNotFoundException {
 		bookingService.delete(id);
-		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }
