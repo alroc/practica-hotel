@@ -1,10 +1,12 @@
 package com.atsistemas.practicahotel.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atsistemas.practicahotel.dto.HotelDto;
@@ -59,5 +62,15 @@ public class HotelController {
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(hotelMapper.mapToDto(hotelService.update(id, hotelMapper.mapToEntity(hotelDto))));
+	}
+	
+	@GetMapping(value = "/availabilities", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<HotelDto>> getAvailableHotels(
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
+			String name, Integer category) {
+		
+		return ResponseEntity.status(HttpStatus.OK).body(hotelService.findHotels(name, category, dateFrom, dateTo)
+				.stream().map(hotelMapper::mapToDto).collect(Collectors.toList()));
 	}
 }

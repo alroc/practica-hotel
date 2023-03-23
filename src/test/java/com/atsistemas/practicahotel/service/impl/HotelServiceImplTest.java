@@ -1,5 +1,8 @@
 package com.atsistemas.practicahotel.service.impl;
 
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.jpa.domain.Specification;
 
 import com.atsistemas.practicahotel.entity.Hotel;
 import com.atsistemas.practicahotel.error.HotelNotFoundException;
@@ -26,12 +30,16 @@ public class HotelServiceImplTest {
 	private Hotel hotelMock;
 	private Optional<Hotel> optHotelMock;
 	
+	private final LocalDate dateFrom = LocalDate.of(2023, 7, 14);
+	private final LocalDate dateTo = LocalDate.of(2023, 7, 16);
+	private final Long days = dateFrom.until(dateTo.plusDays(1), ChronoUnit.DAYS);
+	
 	@BeforeEach
 	public void setup()
 	{
 		hotelServiceImpl = new HotelServiceImpl(hotelRepositoryMock);
 		
-		hotelsMock = List.of(new Hotel(1, "Barcelo", 3), new Hotel(2, "madan", 4));
+		hotelsMock = List.of(new Hotel(1, "Barcelo", 3), new Hotel(2, "Mar", 4));
 		hotelMock = new Hotel(1, "Barcelo", 3);
 		optHotelMock = Optional.of(new Hotel(1, "Barcelo", 3));
 	}
@@ -42,7 +50,6 @@ public class HotelServiceImplTest {
 		Mockito.when(hotelRepositoryMock.findAll()).thenReturn(hotelsMock);
 		
 		List<Hotel> hotels = hotelServiceImpl.findAll();
-		
 		Assertions.assertEquals(2, hotels.size());
 		
 		Mockito.verify(hotelRepositoryMock).findAll();
@@ -64,9 +71,7 @@ public class HotelServiceImplTest {
 	public void testFindByIdWhenException() throws HotelNotFoundException
 	{
 		Mockito.when(hotelRepositoryMock.findById(id)).thenReturn(Optional.empty());
-		
 		Assertions.assertThrows(HotelNotFoundException.class, () -> hotelServiceImpl.findById(id));
-		
 	}
 	
 	@Test
@@ -99,4 +104,28 @@ public class HotelServiceImplTest {
 		Mockito.verify(hotelRepositoryMock).save(optHotelMock.get());
 	}
 
+	@Test
+	public void testFindHotels()
+	{			
+		Mockito.when(hotelRepositoryMock.findAvailableHotels(dateFrom, dateTo, days)).thenReturn(hotelsMock);
+		Mockito.when(hotelRepositoryMock.findAll(Mockito.<Specification<Hotel>>any())).thenReturn(hotelsMock);
+		
+		List<Hotel> hotels = hotelServiceImpl.findHotels("Barcelo", 3, dateFrom, dateTo);
+		Assertions.assertEquals(hotels.size(), 2);
+
+		Mockito.verify(hotelRepositoryMock).findAvailableHotels(dateFrom, dateTo, days);
+		Mockito.verify(hotelRepositoryMock).findAll(Mockito.<Specification<Hotel>>any());
+	}
+	
+	@Test
+	public void testFindAvailableHotels()
+	{
+		Mockito.when(hotelRepositoryMock.findAvailableHotels(dateFrom, dateTo, days)).thenReturn(hotelsMock);
+		
+		List<Hotel> hotels = hotelServiceImpl.findAvailableHotels(dateFrom, dateTo);
+		Assertions.assertEquals(hotels.size(), 2);
+
+		Mockito.verify(hotelRepositoryMock).findAvailableHotels(dateFrom, dateTo, days);
+		Mockito.verifyNoMoreInteractions(hotelRepositoryMock);
+	}
 }

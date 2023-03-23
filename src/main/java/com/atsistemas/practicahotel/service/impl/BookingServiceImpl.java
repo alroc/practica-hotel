@@ -15,7 +15,6 @@ import com.atsistemas.practicahotel.error.HotelNotAvailableException;
 import com.atsistemas.practicahotel.error.HotelNotFoundException;
 import com.atsistemas.practicahotel.repository.AvailabilityRepository;
 import com.atsistemas.practicahotel.repository.BookingRepository;
-import com.atsistemas.practicahotel.service.AvailabilityService;
 import com.atsistemas.practicahotel.service.BookingService;
 import com.atsistemas.practicahotel.service.HotelService;
 
@@ -24,15 +23,13 @@ public class BookingServiceImpl implements BookingService {
 	
 	private BookingRepository bookingRepository;
 	private HotelService hotelService;
-	private AvailabilityService availabilityService;
 	private AvailabilityRepository availabilityRepository;
 
 	public BookingServiceImpl(BookingRepository bookingRepository, HotelService hotelService,
-			AvailabilityService availabilityService, AvailabilityRepository availabilityRepository) {
+			AvailabilityRepository availabilityRepository) {
 		super();
 		this.bookingRepository = bookingRepository;
 		this.hotelService = hotelService;
-		this.availabilityService = availabilityService;
 		this.availabilityRepository = availabilityRepository;
 	}
 
@@ -42,13 +39,17 @@ public class BookingServiceImpl implements BookingService {
 		Hotel hotel = hotelService.findById(createBookingDto.getIdHotel());
 		
 		//Se comprueba que se pueda hacer la reserva
-		List<LocalDate> dates = createBookingDto.getDateFrom()
-				.datesUntil(createBookingDto.getDateTo().plusDays(1)).collect(Collectors.toList());
+		List<Hotel> availableHotels = hotelService.findAvailableHotels(createBookingDto.getDateFrom(),createBookingDto.getDateTo());
 		
-		if(availabilityService.checkHotelAvailability(hotel, dates) == false) 
+		boolean available = availableHotels.stream().anyMatch(h -> h.getId() == hotel.getId());
+
+		if(available == false) 
 			throw new HotelNotAvailableException();
 		
 		//Se decrementa en una unidad las disponibilidades correspondientes
+		List<LocalDate> dates = createBookingDto.getDateFrom()
+				.datesUntil(createBookingDto.getDateTo().plusDays(1)).collect(Collectors.toList());
+		
 		dates.forEach((date) -> {
 			Availability availability = availabilityRepository.findByDateAndHotel(date, hotel).get();
 			availability.setRooms(availability.getRooms() - 1);

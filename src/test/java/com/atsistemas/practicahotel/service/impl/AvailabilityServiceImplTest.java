@@ -1,9 +1,7 @@
 package com.atsistemas.practicahotel.service.impl;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,49 +25,54 @@ public class AvailabilityServiceImplTest {
 	@Mock private AvailabilityRepository availabilityRepositoryMock;
 	@Mock private HotelService hotelServiceMock;
 	
-	private OpenAvailabilityDto openAvailabilityDto;
 	private final Integer idHotel = 1;
-	private final Integer rooms = 3;
 	private final LocalDate dateFrom = LocalDate.of(2023, 7, 14);
-	private final LocalDate dateTo = LocalDate.of(2023, 7, 14);
+	private final LocalDate dateTo = LocalDate.of(2023, 7, 15);
 	private Hotel hotelMock;
 	
 	@BeforeEach
 	public void setup()
 	{
 		availabilityServiceImpl = new AvailabilityServiceImpl(availabilityRepositoryMock, hotelServiceMock);
-		openAvailabilityDto = new OpenAvailabilityDto(dateFrom, dateTo, idHotel, rooms);
-		hotelMock = new Hotel(1, "Barcelo", 3);
+		hotelMock = new Hotel(idHotel, "Barcelo", 3);
 	}
 	
 	@Test
 	public void testOpen() throws HotelNotFoundException
 	{
-		Optional<Availability> optAvailability = Optional.of(new Availability(1, dateFrom, hotelMock, 2));
+		Availability availabilityMock = new Availability(1, dateFrom, hotelMock, 2);
+		Optional<Availability> optAvailabilityMock = Optional.of(availabilityMock);
+		
+		OpenAvailabilityDto openAvailabilityDto = new OpenAvailabilityDto(dateFrom, dateTo, idHotel, 3);
 		
 		Mockito.when(hotelServiceMock.findById(idHotel)).thenReturn(hotelMock);
-		Mockito.when(availabilityRepositoryMock.findByDateAndHotel(dateFrom, hotelMock)).thenReturn(optAvailability);
-		Mockito.when(availabilityRepositoryMock.save(optAvailability.get())).thenReturn(optAvailability.get());
+		Mockito.when(availabilityRepositoryMock.findByDateAndHotel(Mockito.any(LocalDate.class), Mockito.any(Hotel.class)))
+			.thenReturn(optAvailabilityMock);
+		Mockito.when(availabilityRepositoryMock.save(availabilityMock)).thenReturn(availabilityMock);
 
 		availabilityServiceImpl.open(openAvailabilityDto);
 		
-		Assertions.assertEquals(5, optAvailability.get().getRooms());
+		Assertions.assertEquals(8, availabilityMock.getRooms());
 
 		
 		Mockito.verify(hotelServiceMock).findById(idHotel);
-		Mockito.verify(availabilityRepositoryMock).findByDateAndHotel(dateFrom, hotelMock);
-		Mockito.verify(availabilityRepositoryMock).save(optAvailability.get());	
+		Mockito.verify(availabilityRepositoryMock, Mockito.times(2)).findByDateAndHotel(Mockito.any(LocalDate.class), Mockito.any(Hotel.class));
+		Mockito.verify(availabilityRepositoryMock, Mockito.times(2)).save(availabilityMock);	
 	}
 	
 	@Test
 	public void testOpenWhenAvailabilityNotExist() throws HotelNotFoundException
-	{		
+	{
+		OpenAvailabilityDto openAvailabilityDto = new OpenAvailabilityDto(dateFrom, dateTo, idHotel, 3);
+
 		Mockito.when(hotelServiceMock.findById(idHotel)).thenReturn(hotelMock);
-		Mockito.when(availabilityRepositoryMock.findByDateAndHotel(dateFrom, hotelMock)).thenReturn(Optional.empty());
+		Mockito.when(availabilityRepositoryMock.findByDateAndHotel(Mockito.any(LocalDate.class), Mockito.any(Hotel.class)))
+			.thenReturn(Optional.empty());
 		
 		availabilityServiceImpl.open(openAvailabilityDto);
 		
 		Mockito.verify(hotelServiceMock).findById(idHotel);
-		Mockito.verify(availabilityRepositoryMock).findByDateAndHotel(dateFrom, hotelMock);
+		Mockito.verify(availabilityRepositoryMock, Mockito.times(2)).findByDateAndHotel(Mockito.any(LocalDate.class), Mockito.any(Hotel.class));
 	}
+	
 }

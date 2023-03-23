@@ -1,5 +1,6 @@
 package com.atsistemas.practicahotel.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.atsistemas.practicahotel.entity.Hotel;
@@ -15,5 +16,7 @@ public interface HotelService {
 	
 	Hotel update(Integer id, Hotel updatedHotel) throws HotelNotFoundException;
 	
-	List<Hotel> findHotels(String name, Integer category);
+	List<Hotel> findHotels(String name, Integer category, LocalDate dateFrom, LocalDate dateTo);
+	
+	List<Hotel> findAvailableHotels(LocalDate dateFrom, LocalDate dateTo);
 }

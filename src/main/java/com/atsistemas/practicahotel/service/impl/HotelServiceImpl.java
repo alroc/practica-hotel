@@ -1,6 +1,9 @@
 package com.atsistemas.practicahotel.service.impl;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -51,8 +54,14 @@ public class HotelServiceImpl implements HotelService {
 	}
 	
 	@Override
-	public List<Hotel> findHotels(String name, Integer category) {
+	public List<Hotel> findHotels(String name, Integer category, LocalDate dateFrom, LocalDate dateTo) {
 		Specification<Hotel> spec = Specification.where(null);
+		
+		List<Integer> hotels = findAvailableHotels(dateFrom, dateTo)
+				.stream().map(Hotel::getId).collect(Collectors.toList());
+		
+		Specification<Hotel> availableHotelsSpec = availableHotelsFilter(hotels);
+		spec = spec.and(availableHotelsSpec);
 
 		if (name != null) {
 			Specification<Hotel> nameSpec = nameFilter(name);
@@ -75,5 +84,16 @@ public class HotelServiceImpl implements HotelService {
 		return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%" + name + "%");
 	}
 	
+	private Specification<Hotel> availableHotelsFilter(List<Integer> hotels) {
+		
+		return (root, query, criteriaBuilder) -> root.get("id").in(hotels);
+	}
+	
+	public List<Hotel> findAvailableHotels(LocalDate dateFrom, LocalDate dateTo)
+	{
+		Long days = dateFrom.until(dateTo.plusDays(1), ChronoUnit.DAYS);
+		
+		return hotelRepository.findAvailableHotels(dateFrom, dateTo, days);
+	}
 	
 }

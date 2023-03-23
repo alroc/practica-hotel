@@ -1,10 +1,15 @@
 package com.atsistemas.practicahotel.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +26,14 @@ public class Hotel {
 	
 	@Column(name = "category")
 	private Integer category;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_hotel", referencedColumnName ="id")
+	private List<Availability> availabilities;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_hotel", referencedColumnName ="id")
+	private List<Booking> bookings;
 
 	public Hotel() {
 
@@ -55,5 +68,21 @@ public class Hotel {
 
 	public void setCategory(Integer category) {
 		this.category = category;
+	}
+
+	public List<Availability> getAvailabilities() {
+		return availabilities;
+	}
+
+	public void setAvailabilities(List<Availability> availabilities) {
+		this.availabilities = availabilities;
+	}
+
+	public List<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
 	}
 }
