@@ -12,6 +12,4 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Inte
 	
 	Optional<Availability> findByDateAndHotel(LocalDate date, Hotel hotel);
 	
-	Optional<Availability> findByDateAndHotelAndRoomsGreaterThanEqual(LocalDate date, Hotel hotel, Integer rooms);
-
 }

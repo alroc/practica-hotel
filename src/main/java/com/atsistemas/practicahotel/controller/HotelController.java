@@ -68,7 +68,7 @@ public class HotelController {
 	public ResponseEntity<List<HotelDto>> getAvailableHotels(
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
-			String name, Integer category) {
+			@RequestParam(required = false) String name, @RequestParam(required = false) Integer category) {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(hotelService.findHotels(name, category, dateFrom, dateTo)
 				.stream().map(hotelMapper::mapToDto).collect(Collectors.toList()));
