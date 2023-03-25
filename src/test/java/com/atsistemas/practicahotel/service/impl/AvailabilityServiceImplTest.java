@@ -53,7 +53,6 @@ public class AvailabilityServiceImplTest {
 		availabilityServiceImpl.open(openAvailabilityDto);
 		
 		Assertions.assertEquals(8, availabilityMock.getRooms());
-
 		
 		Mockito.verify(hotelServiceMock).findById(idHotel);
 		Mockito.verify(availabilityRepositoryMock, Mockito.times(2)).findByDateAndHotel(Mockito.any(LocalDate.class), Mockito.any(Hotel.class));

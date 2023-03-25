@@ -6,7 +6,7 @@ import com.atsistemas.practicahotel.dto.HotelDto;
 import com.atsistemas.practicahotel.entity.Hotel;
 
 @Component
-public class HotelMapper implements Mapper<HotelDto, Hotel>{
+public class HotelMapper implements Mapper<HotelDto, Hotel> {
 
 	@Override
 	public HotelDto mapToDto(Hotel entity) {

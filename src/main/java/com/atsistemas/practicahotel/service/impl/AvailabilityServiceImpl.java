@@ -31,20 +31,17 @@ public class AvailabilityServiceImpl implements AvailabilityService{
 	@Override
 	public void open(OpenAvailabilityDto openAvailabilityDto) throws HotelNotFoundException {
 		
-		//Busqueda del hotel
 		Hotel hotel = hotelService.findById(openAvailabilityDto.getIdHotel());
 		
-		//Construccion del rango de fechas
 		List<LocalDate> dates = openAvailabilityDto.getDateFrom()
 				.datesUntil(openAvailabilityDto.getDateTo().plusDays(1)).collect(Collectors.toList());
 		
-		//Recorro fechas y actualizo/registro las disponibilidades
+		//Actualizo/registro las disponibilidades
 		dates.forEach((date) -> {
 			Optional<Availability> optAvailability = availabilityRepository.findByDateAndHotel(date, hotel);
 			Availability availability;
 			
-			//Ya existe una disponibilidad con esa fecha
-			if(optAvailability.isPresent())
+			if(optAvailability.isPresent()) //Existe disponibilidad con esa fecha
 			{
 				availability = optAvailability.get();
 				availability.setRooms(availability.getRooms() + openAvailabilityDto.getRooms());

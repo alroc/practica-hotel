@@ -9,7 +9,7 @@ import com.atsistemas.practicahotel.entity.Hotel;
 
 
 @Component
-public class BookingMapper implements Mapper<BookingDto, Booking>{
+public class BookingMapper implements Mapper<BookingDto, Booking> {
 
 	private Mapper<HotelDto, Hotel> hotelMapper;
 	

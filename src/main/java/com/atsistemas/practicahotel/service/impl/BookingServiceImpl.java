@@ -46,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
 		if(available == false) 
 			throw new HotelNotAvailableException();
 		
-		//Se decrementa en una unidad las disponibilidades correspondientes
+		//Se decrementa una habitacion en las disponibilidades correspondientes
 		List<LocalDate> dates = createBookingDto.getDateFrom()
 				.datesUntil(createBookingDto.getDateTo().plusDays(1)).collect(Collectors.toList());
 		
@@ -82,7 +82,7 @@ public class BookingServiceImpl implements BookingService {
 	public void delete(Integer id) throws BookingNotFoundException {
 		Booking booking = this.findById(id);
 		
-		//Se incrementa en una unidad las disponibilidades correspondientes
+		//Se incrementa una habitacion en las disponibilidades correspondientes
 		Hotel hotel = booking.getHotel();
 		List<LocalDate> dates = booking.getDateFrom()
 				.datesUntil(booking.getDateTo().plusDays(1)).collect(Collectors.toList());
