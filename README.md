@@ -5,37 +5,38 @@ el fichero application.properties. En resources se encuentran los archivos SQL q
 
 ## Guia de uso
 ### Hotel
-#### Crear nuevo hotel
-POST -> http://localhost:8080/hotels
+**Crear nuevo hotel** &ensp; POST -> http://localhost:8080/hotels
 
-Ejemplo JSON:
+Se debe enviar un JSON con los datos del hotel. Ejemplo JSON:
 
     {
         "name": "El pueblo",
         "category": 5
     }
 
-#### Actualizar hotel
-PUT -> http://localhost:8080/hotels/{id}
+**Actualizar hotel** &ensp; PUT -> http://localhost:8080/hotels/{id}
 
-Ejemplo JSON:
+Se debe enviar un JSON con los datos que se quieren actualizar. Ejemplo JSON:
 
     {
         "name": "El pueblo actualizado",
         "category": 4
     }
 
-#### Consultar hotel
-GET -> http://localhost:8080/hotels/{id}
+**Consultar hotel** &ensp; GET -> http://localhost:8080/hotels/{id}
 
-#### Consulta de hoteles
-GET -> http://localhost:8080/hotels
+**Consulta de hoteles** &ensp; GET -> http://localhost:8080/hotels
+
+**Consultar hoteles con disponibilidad** &ensp; GET -> http://localhost:8080/hotels/availabilities
+
+Se deben enviar las fechas de entrada y salida, el nombre (opcional) y la categoría (opcional) como parametros, Ejemplo URL completa: 
+
+http://localhost:8080/hotels/availabilities?dateFrom=2023-06-06&dateTo=2023-06-10&name=Barcelo&category=4
 
 ### Disponibilidad
 
-#### Abrir disponibilidad
-POST -> http://localhost:8080/availabilities
-
+**Abrir disponibilidad** &ensp; POST -> http://localhost:8080/availabilities
+Se debe enviar un JSON con el rango de fechas, el hotel y el número de habitaciones. Ejemplo JSON:
 Ejemplo JSON:
 
     {
@@ -46,10 +47,8 @@ Ejemplo JSON:
     }
 
 ### Reservas
-#### Reserva de habitación
-POST -> http://localhost:8080/bookings
-
-Ejemplo JSON:
+**Reserva de habitación** &ensp; POST -> http://localhost:8080/bookings
+Se debe enviar un JSON con el hotel, las fechas de entrada y salida, y el email. Ejemplo JSON:
 
     {
         "idHotel": 1,
@@ -58,17 +57,12 @@ Ejemplo JSON:
         "email": "carlos@gmail.com"
     }
 
-##### Consulta de reservas
-GET -> http://localhost:8080/bookings
+**Consulta de reservas** &ensp; GET -> http://localhost:8080/bookings
 
-Se deben enviar el id del hotal, y las fechas de inicio y fin como parametros.
-
-Ejemplo URL completa: 
+Se debe enviar el id del hotal, y las fechas de inicio y fin como parametros. Ejemplo URL completa: 
 
 http://localhost:8080/bookings?idHotel=1&dateFrom=2023-09-20&dateTo=2023-09-22
 
-#### Obtener reserva
-GET -> http://localhost:8080/bookings/{id}
+**Obtener reserva** &ensp; GET -> http://localhost:8080/bookings/{id}
 
-#### Cancelar reserva
-DELETE -> http://localhost:8080/bookings/{id}
+**Cancelar reserva** &ensp; DELETE -> http://localhost:8080/bookings/{id}
