@@ -1,7 +1,9 @@
 # Reserva de hotel
 
-API REST que permite gestionar la reserva de habitaciones en diferentes hoteles. La aplicación utiliza una de base de datos Postgres, por lo que, debes  actualizar
-el fichero application.properties. En resources se encuentran los archivos SQL que debes ejecutar en tu gestor de base de datos para generar la base de datos.
+API REST que permite gestionar la reserva de habitaciones en diferentes hoteles. La aplicación utiliza una de base de datos Postgres, por lo que, debes realizar los siguientes pasos:
+
+- Generar la base de datos, para ello, debes ejecutar en tu gestor de base de datos los archivos SQL que se encuentran en la carpeta resources.
+- Actualizar el archivo application.properties.
 
 ## Guia de uso
 ### Hotel
@@ -36,8 +38,8 @@ http://localhost:8080/hotels/availabilities?dateFrom=2023-06-06&dateTo=2023-06-1
 ### Disponibilidad
 
 **Abrir disponibilidad** &ensp; POST -> http://localhost:8080/availabilities
+
 Se debe enviar un JSON con el rango de fechas, el hotel y el número de habitaciones. Ejemplo JSON:
-Ejemplo JSON:
 
     {
         "dateFrom": "2023-08-10",
@@ -48,6 +50,7 @@ Ejemplo JSON:
 
 ### Reservas
 **Reserva de habitación** &ensp; POST -> http://localhost:8080/bookings
+
 Se debe enviar un JSON con el hotel, las fechas de entrada y salida, y el email. Ejemplo JSON:
 
     {
@@ -61,7 +64,7 @@ Se debe enviar un JSON con el hotel, las fechas de entrada y salida, y el email.
 
 Se debe enviar el id del hotal, y las fechas de inicio y fin como parametros. Ejemplo URL completa: 
 
-http://localhost:8080/bookings?idHotel=1&dateFrom=2023-09-20&dateTo=2023-09-22
+http://localhost:8080/bookings?idHotel=1&startDate=2023-06-06&endDate=2023-06-10
 
 **Obtener reserva** &ensp; GET -> http://localhost:8080/bookings/{id}
 
