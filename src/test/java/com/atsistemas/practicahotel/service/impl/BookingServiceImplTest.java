@@ -81,13 +81,14 @@ public class BookingServiceImplTest {
 		List<Booking> bookingsMock = List.of(bookingMock, new Booking(2, hotelMock, dateFrom, dateTo, "pedro@gmail.com"));
 		
 		Mockito.when(hotelServiceMock.findById(hotelMock.getId())).thenReturn(hotelMock);
-		Mockito.when(bookingRepositoryMock.findByHotelAndDateFromAndDateTo(hotelMock, dateFrom, dateTo)).thenReturn(bookingsMock);
+		Mockito.when(bookingRepositoryMock.findByHotelAndDateFromGreaterThanEqualAndDateToLessThanEqual(hotelMock, dateFrom, dateTo))
+			.thenReturn(bookingsMock);
 		
 		List<Booking> bookings =  bookingServiceImpl.findBookings(hotelMock.getId(), dateFrom, dateTo);
 		Assertions.assertEquals(bookingsMock.size(), bookings.size());
 		
 		Mockito.verify(hotelServiceMock).findById(hotelMock.getId());
-		Mockito.verify(bookingRepositoryMock).findByHotelAndDateFromAndDateTo(hotelMock, dateFrom, dateTo);
+		Mockito.verify(bookingRepositoryMock).findByHotelAndDateFromGreaterThanEqualAndDateToLessThanEqual(hotelMock, dateFrom, dateTo);
 	}
 	
 	@Test

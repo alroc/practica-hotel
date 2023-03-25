@@ -73,9 +73,10 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> findBookings(Integer idHotel, LocalDate dateFrom, LocalDate dateTo) throws HotelNotFoundException {
+	public List<Booking> findBookings(Integer idHotel, LocalDate startDate, LocalDate endDate) throws HotelNotFoundException {
 		Hotel hotel = hotelService.findById(idHotel);
-		return bookingRepository.findByHotelAndDateFromAndDateTo(hotel, dateFrom, dateTo);
+		return bookingRepository.
+				findByHotelAndDateFromGreaterThanEqualAndDateToLessThanEqual(hotel, startDate, endDate);
 	}
 
 	@Override

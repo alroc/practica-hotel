@@ -51,10 +51,10 @@ public class BookingController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<BookingDto>> getBookings(@RequestParam Integer idHotel,
-			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
-			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) throws HotelNotFoundException {
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) throws HotelNotFoundException {
 				
-		return ResponseEntity.status(HttpStatus.OK).body(bookingService.findBookings(idHotel, dateFrom, dateTo)
+		return ResponseEntity.status(HttpStatus.OK).body(bookingService.findBookings(idHotel, startDate, endDate)
 				.stream().map(bookingMapper::mapToDto).collect(Collectors.toList()));
 	}
 	

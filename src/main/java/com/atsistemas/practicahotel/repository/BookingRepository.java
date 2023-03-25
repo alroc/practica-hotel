@@ -11,6 +11,6 @@ import com.atsistemas.practicahotel.entity.Hotel;
 
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 	
-	List<Booking> findByHotelAndDateFromAndDateTo(Hotel hotel, LocalDate dateFrom, LocalDate dateTo);
+	List<Booking> findByHotelAndDateFromGreaterThanEqualAndDateToLessThanEqual(Hotel hotel, LocalDate startDate, LocalDate endDate);
 
 }
