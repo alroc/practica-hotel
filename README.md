@@ -1,11 +1,11 @@
 # Reserva de hotel
 
-API REST que permite gestionar la reserva de habitaciones en diferentes hoteles. La aplicación utiliza una de base de datos Postgres, por lo que, debes realizar los siguientes pasos:
+API REST que permite gestionar la reserva de habitaciones en diferentes hoteles. La aplicación utiliza una base de datos Postgres, por lo que, debes realizar los siguientes pasos:
 
 - Generar la base de datos, para ello, debes ejecutar en tu gestor de base de datos los archivos SQL que se encuentran en la carpeta resources.
 - Actualizar el archivo application.properties.
 
-## Guia de uso
+## Guía de uso
 ### Hotel
 **Crear nuevo hotel** &ensp; POST -> http://localhost:8080/hotels
 
